@@ -1,9 +1,7 @@
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const generateToken = require('../utils/generateToken');
 require('dotenv').config();
-
-const { JWT_SECRET } = process.env;
 
 const validateBody = (body) =>
   Joi.object({
@@ -20,14 +18,7 @@ module.exports = async (req, res) => {
 
   if (!user) return res.status(400).json({ message: 'Invalid fields' });
 
-  const payload = {
-    email: req.body.email,
-  };
-
-  const token = jwt.sign(payload, JWT_SECRET, {
-    expiresIn: '1h',
-    algorithm: 'HS256',
-  });
+  const token = generateToken(req.body.email);
 
   res.status(200).json({ token });
 };
