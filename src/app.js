@@ -14,6 +14,7 @@ app.post('/user', user.insert);
 app.post('/categories', validateToken, categories.insert);
 
 app.get('/user', validateToken, user.getAll);
+app.get('/categories', validateToken, categories.getAll);
 app.get('/user/:id', validateToken, user.getById);
 
 // ...
