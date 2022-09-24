@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { User } = require('../models');
 const generateToken = require('../utils/generateToken');
+const verifyToken = require('../utils/verifyToken');
 
 const validateBody = (body) =>
   Joi.object({
@@ -53,8 +54,15 @@ const getById = async (req, res) => {
   return res.status(200).json(user);
 };
 
+const getUserId = async (token) => {
+  const { email } = verifyToken(token);
+  const id = await User.findOne({ where: { email } });
+    return id;
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
+  getUserId,
 };

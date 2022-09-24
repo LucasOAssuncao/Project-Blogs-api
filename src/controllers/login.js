@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
   if (!user) return res.status(400).json({ message: 'Invalid fields' });
 
-  const token = generateToken(req.body.email);
+  const token = generateToken(req.body.email, req.body.id);
 
   res.status(200).json({ token });
 };

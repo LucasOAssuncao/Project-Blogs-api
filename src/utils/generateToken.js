@@ -3,9 +3,9 @@ require('dotenv').config();
 
 const { JWT_SECRET } = process.env;
 
-module.exports = (data) => {
+module.exports = (email, id) => {
   const payload = {
-    email: data,
+    email, id,
   };
 
   const token = jwt.sign(payload, JWT_SECRET, {
