@@ -22,7 +22,6 @@ const insert = async (req, res) => {
 
   if (error) return res.status(400).json({ message: error.message });
 
-  console.log(req.body.email);
   const user = await User.findOne({ where: { email: req.body.email } });
 
   if (user) return res.status(409).json({ message: 'User already registered' });
@@ -42,7 +41,20 @@ const getAll = async (_req, res) => {
   return res.status(200).json(users);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  
+  const user = await User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+  });
+
+  if (!user) return res.status(404).json({ message: 'User does not exist' });
+
+  return res.status(200).json(user);
+};
+
 module.exports = {
   insert,
   getAll,
+  getById,
 };
