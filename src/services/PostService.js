@@ -27,7 +27,6 @@ const update = async (id, title, content) => {
 };
 
 const findAllSearch = async (query) => {
-
 const posts = await BlogPost.findAll({
     where: {
       [Op.or]: [
