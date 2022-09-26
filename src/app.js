@@ -14,10 +14,11 @@ app.post('/login', login);
 app.post('/user', user.insert);
 app.post('/categories', validateToken, categories.insert);
 app.post('/post', validateToken, post.insert);
-app.get('/post', validateToken, post.getAll);
 
+app.get('/post', validateToken, post.getAll);
 app.get('/user', validateToken, user.getAll);
 app.get('/categories', validateToken, categories.getAll);
+app.get('/post/:id', validateToken, post.getById);
 app.get('/user/:id', validateToken, user.getById);
 
 // ...
