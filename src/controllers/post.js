@@ -83,8 +83,30 @@ const getById = async (req, res) => {
   return res.status(200).json(post);
 };
 
+const update = async (req, res) => {
+  const { title, content } = req.body;
+  const reqId = req.params.id;
+  const { authorization } = req.headers;
+
+  if (!title || !content) {
+    return res.status(400).json({ message: 'Some required fields are missing' });
+  }
+  const { dataValues: { id } } = await user.getUserId(authorization);
+  const post = await BlogPost.findByPk(reqId);
+
+  if (!post) return res.status(404).json({ message: 'Post does not exist' });
+  
+  if (post.userId !== id) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }
+
+  const updated = await PostService.update(id, title, content);
+  return res.status(200).json(updated);
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
+  update,
 };

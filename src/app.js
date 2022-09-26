@@ -21,6 +21,7 @@ app.get('/categories', validateToken, categories.getAll);
 app.get('/post/:id', validateToken, post.getById);
 app.get('/user/:id', validateToken, user.getById);
 
+app.put('/post/:id', validateToken, post.update);
 // ...
 
 // É importante exportar a constante `app`,
