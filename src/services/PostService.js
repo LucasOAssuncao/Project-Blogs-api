@@ -1,11 +1,11 @@
-const { PostCategory, BlogPost } = require('../models');
+const { PostCategory, BlogPost, Category } = require('../models');
 
 const insert = async (postId, categoryId) => {
   await PostCategory.create({ postId, categoryId });
 };
 
 const update = async (id, title, content) => {
-  await PostCategory.update(
+  await BlogPost.update(
     {
       title,
       content,
@@ -14,7 +14,14 @@ const update = async (id, title, content) => {
       where: { id },
     },
   );
-  const post = await BlogPost.findOne({ id });
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [{
+      model: Category,
+      as: 'categories',
+    }],
+    exclude: ['PostId'],
+  });
   return post;
 };
 

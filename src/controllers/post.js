@@ -92,15 +92,15 @@ const update = async (req, res) => {
     return res.status(400).json({ message: 'Some required fields are missing' });
   }
   const { dataValues: { id } } = await user.getUserId(authorization);
-  const post = await BlogPost.findByPk(reqId);
+  const post = await BlogPost.findOne({ reqId });
 
   if (!post) return res.status(404).json({ message: 'Post does not exist' });
-  
+
   if (post.userId !== id) {
     return res.status(401).json({ message: 'Unauthorized user' });
   }
 
-  const updated = await PostService.update(id, title, content);
+  const updated = await PostService.update(reqId, title, content);
   return res.status(200).json(updated);
 };
 
