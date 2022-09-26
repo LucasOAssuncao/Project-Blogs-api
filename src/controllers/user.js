@@ -60,9 +60,19 @@ const getUserId = async (token) => {
     return id;
 };
 
+const deleteUser = async (req, res) => {
+  const { authorization } = req.headers;
+  const { dataValues: { id } } = await getUserId(authorization);
+
+  await User.destroy({ where: { id } });
+
+  res.status(204).json();
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
   getUserId,
+  deleteUser,
 };

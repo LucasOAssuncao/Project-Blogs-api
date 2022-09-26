@@ -24,6 +24,7 @@ app.get('/user/:id', validateToken, user.getById);
 app.put('/post/:id', validateToken, post.update);
 
 app.delete('/post/:id', validateToken, post.deletePost);
+app.delete('/user/:id', validateToken, user.deleteUser);
 // ...
 
 // É importante exportar a constante `app`,
