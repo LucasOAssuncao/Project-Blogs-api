@@ -120,10 +120,26 @@ const deletePost = async (req, res) => {
   return res.status(204).json();
 };
 
+const search = async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    const posts = await BlogPost.findAll({ include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } },
+    ] });
+    return res.status(200).json(posts);
+  }
+  const post = await PostService.findAllSearch(q);
+  if (!post) return [];
+
+  return res.status(200).json(post);
+};
+
 module.exports = {
   insert,
   getAll,
   getById,
   update,
   deletePost,
+  search,
 };

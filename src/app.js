@@ -18,6 +18,7 @@ app.post('/post', validateToken, post.insert);
 app.get('/post', validateToken, post.getAll);
 app.get('/user', validateToken, user.getAll);
 app.get('/categories', validateToken, categories.getAll);
+app.get('/post/search', validateToken, post.search);
 app.get('/post/:id', validateToken, post.getById);
 app.get('/user/:id', validateToken, user.getById);
 

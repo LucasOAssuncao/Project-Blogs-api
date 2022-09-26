@@ -1,4 +1,5 @@
-const { PostCategory, BlogPost, Category } = require('../models');
+const { Op } = require('sequelize');
+const { PostCategory, BlogPost, Category, User } = require('../models');
 
 const insert = async (postId, categoryId) => {
   await PostCategory.create({ postId, categoryId });
@@ -25,4 +26,20 @@ const update = async (id, title, content) => {
   return post;
 };
 
-module.exports = { insert, update };
+const findAllSearch = async (query) => {
+
+const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ] },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ] });
+
+  return posts;
+};
+
+module.exports = { insert, update, findAllSearch };
