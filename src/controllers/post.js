@@ -1,6 +1,6 @@
 // const { Op } = require('sequelize');
 const Joi = require('joi');
-const { BlogPost, Category } = require('../models');
+const { BlogPost, Category, User } = require('../models');
 const PostService = require('../services/PostService');
 const user = require('./user');
 
@@ -42,6 +42,26 @@ const insert = async (req, res) => {
   return res.status(201).json(inserted);
 };
 
+const getAll = async (_req, res) => {
+  const posts = await BlogPost.findAll({
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: ['password'],
+        },
+      },
+      {
+        model: Category,
+        as: 'categories',
+      },
+    ],
+  });
+  return res.status(200).json(posts);
+};
+
 module.exports = {
   insert,
+  getAll,
 };
